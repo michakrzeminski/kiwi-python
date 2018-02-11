@@ -111,15 +111,15 @@ def book_flight(args, response, passengers):
 		booking_body['bags'] = args.bags
 
 	# use Kiwi fake booking API
-	response = requests.post(BOOKING_URL, json=booking_body)
+	booking_response = requests.post(BOOKING_URL, json=booking_body)
 
 	# handle errors
-	if response.status_code >= 400:
+	if booking_response.status_code >= 400:
 		sys.exit('booking request failed')
-	if response.json().get('pnr') == None:
+	if booking_response.json().get('pnr') == None:
 		sys.exit('failed to confirm reservation')
 
-	return response.json().get('pnr')
+	return booking_response.json().get('pnr')
 
 args = parse_arguments()
 response, num_passengers = search_flights(args)
