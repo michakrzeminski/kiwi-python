@@ -47,11 +47,13 @@ response = requests.get(search_url, params=search_params)
 print(response.status_code)
 print(response.content)
 
+# error -- search request failed
 if response.status_code >= 400:
 	sys.exit('search request failed')
 
+# error -- no flights matching search criteria
 if response.json().get('_results') == 0:
-	sys.exit('no results found matching search criteria')
+	sys.exit('no flights found matching search criteria')
 
 '''
 # book flight
