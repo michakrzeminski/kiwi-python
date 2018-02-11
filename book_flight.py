@@ -9,6 +9,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--date', help='departure date', required=True)
 parser.add_argument('--return-length', help='return flight, days in destination', type=int, required=False)
 parser.add_argument('--one-way', help='one-way flight (default)', action='store_true', required=False)
+parser.add_argument('--cheapest', help='find cheapest flight (default)', action='store_true', required=False)
+parser.add_argument('--fastest', help='find fastest flight', action='store_true', required=False)
 
 args = parser.parse_args()
 print(args)
@@ -24,8 +26,8 @@ search_params = {
 	'to': 'dublin_ie',
 	'typeFlight': 'oneway',
 	'adults': 1,
-	'limit': 1,
-	'sort': 'price'
+	'sort': 'price',
+	'limit': 1
 }
 
 # modified slightly in order to be able to use argparse: 
@@ -34,6 +36,9 @@ if args.return_length:
 	search_params['typeFlight'] = 'return'
 	search_params['daysInDestinationFrom'] = args.return_length
 	search_params['daysInDestinationTo'] = args.return_length
+
+if args.fastest:
+	search_params['sort'] = 'duration'
 
 print (search_params)
 response = requests.get(search_url, params=search_params)
