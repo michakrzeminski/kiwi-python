@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-import requests
-import json
 import argparse
+import json
+import requests
+import sys
 
 # get options from user
 parser = argparse.ArgumentParser()
@@ -16,7 +17,7 @@ args = parser.parse_args()
 print(args)
 
 # search flights
-search_url = 'https://api.skypicker.com/flights'
+search_url = 'https://api.skypicker.com/ffffffflights'
 
 search_params = {
 	'v': 3,
@@ -42,9 +43,15 @@ if args.fastest:
 
 print(search_params)
 
-response = requests.get(search_url, params=search_params).json()
-print(response)
-print(response['_results'])
+response = requests.get(search_url, params=search_params)
+print(response.status_code)
+print(response.content)
+
+if response.status_code >= 400:
+	sys.exit('search request failed')
+
+if response.json().get('_results') == 0:
+	sys.exit('no results found matching search criteria')
 
 '''
 # book flight
