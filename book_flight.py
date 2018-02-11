@@ -40,15 +40,13 @@ if args.return_length:
 if args.fastest:
 	search_params['sort'] = 'duration'
 
-print (search_params)
-response = requests.get(search_url, params=search_params)
+print(search_params)
 
-print(response.status_code)
-print(response.headers['content-type'])
+response = requests.get(search_url, params=search_params).json()
+print(response)
+print(response['_results'])
 
 '''
-print(response.content)
-
 # book flight
 booking_url = 'http://128.199.48.38:8080/booking'
 booking_body = {
