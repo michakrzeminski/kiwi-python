@@ -72,7 +72,7 @@ def search_flights(args):
 	return response.json(), search_params.get('passengers')
 
 # get information about passengers
-def get_passenger_info(args, num_passengers):
+def get_passenger_info(num_passengers):
 	passengers = []
 
 	for i in range(num_passengers):
@@ -118,6 +118,6 @@ def book_flight(args, response, passengers):
 
 args = parse_arguments()
 response, num_passengers = search_flights(args)
-passengers = get_passenger_info(args, num_passengers)
+passengers = get_passenger_info(num_passengers)
 confirmation = book_flight(args, response, passengers)
 print('\nbooking confirmation: ' + confirmation)
