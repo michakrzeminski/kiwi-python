@@ -50,7 +50,7 @@ def search_flights(args):
 		search_params['to'] = args.to_location
 
 	# fill in departure date
-	date_in = datetime.strptime(args.date, '%d-%m-%Y')
+	date_in = datetime.strptime(args.date, '%Y-%m-%d')
 	date_out = date_in.strftime('%d/%m/%Y')
 	search_params['dateFrom'] = date_out
 	search_params['dateTo'] = date_out
