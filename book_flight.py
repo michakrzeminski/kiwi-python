@@ -52,11 +52,11 @@ def search_flights(args):
 
 	# initialize search parameters
 	search_params = {
-	'v': 3,
-	'typeFlight': 'oneway',
-	'adults': 1,
-	'sort': 'price',
-	'limit': 1
+		'v': 3,
+		'typeFlight': 'oneway',
+		'adults': 1,
+		'sort': 'price',
+		'limit': 1
 	}
 
 	# fill in location -- from
@@ -91,9 +91,11 @@ def search_flights(args):
 	if response.json().get('_results') == 0:
 		sys.exit('no flights found matching search criteria')
 
-	print(search_params)
-	print(response.json())
 	return response.json()
+
+def book_flight(args, response):
+	print(response.get('data')[0].get('booking_token'))
 
 args = parse_arguments()
 response = search_flights(args)
+book_flight(args, response)
