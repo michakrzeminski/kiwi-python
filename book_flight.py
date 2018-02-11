@@ -17,7 +17,7 @@ args = parser.parse_args()
 print(args)
 
 # search flights
-search_url = 'https://api.skypicker.com/ffffffflights'
+search_url = 'https://api.skypicker.com/flights'
 
 search_params = {
 	'v': 3,
