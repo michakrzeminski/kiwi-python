@@ -74,16 +74,16 @@ def get_passenger_info(args):
 	passengers = []
 
 	for i in range(num_passengers):
-		print('get info about passenger', i + 1)
+		print('enter information about passenger', i + 1)
 
-		passenger = {
-			'firstName': 'Riva',
-			'lastName': 'Nathans',
-			'title': 'Mrs',
-			'email': 'rivanathans@gmail.com',
-			'documentID': 'id_string',
-			'birthday': '1988-07-12'
-		}
+		passenger = {}
+
+		passenger['firstName'] = input('first name: ')
+		passenger['lastName'] = input('last name: ')
+		passenger['title'] = input('title (Mr or Mrs): ')
+		passenger['email'] = input('email address: ')
+		passenger['documentID'] = input('travel document ID: ')
+		passenger['birthday'] = input('birthday (YYYY-MM-DD): ')
 
 		passengers.append(passenger)
 
