@@ -13,6 +13,7 @@ parser.add_argument('--return-length', help='return flight, days in destination'
 parser.add_argument('--one-way', help='one-way flight (default)', action='store_true', required=False)
 parser.add_argument('--cheapest', help='find cheapest flight (default)', action='store_true', required=False)
 parser.add_argument('--fastest', help='find fastest flight', action='store_true', required=False)
+parser.add_argument('--bags', help='number of bags', type=int, required=False)
 
 args = parser.parse_args()
 print(args)
