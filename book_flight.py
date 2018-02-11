@@ -14,12 +14,12 @@ def parse_arguments():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--date', help='departure date', required=True)
 	parser.add_argument('--from-location', help='from (airport code)', required=True)
-	parser.add_argument('--passengers', help='number of passengers', type=int, required=True)
 	parser.add_argument('--to-location', help='to (airport code), omit to see flights to anywhere', required=False)
 	parser.add_argument('--return-length', help='return flight, days in destination', type=int, required=False)
 	parser.add_argument('--one-way', help='one-way flight (default)', action='store_true', required=False)
 	parser.add_argument('--cheapest', help='find cheapest flight (default)', action='store_true', required=False)
 	parser.add_argument('--fastest', help='find fastest flight', action='store_true', required=False)
+	parser.add_argument('--passengers', help='number of passengers', type=int, required=False)
 	parser.add_argument('--bags', help='number of bags', type=int, required=False)
 	return parser.parse_args()
 
@@ -30,11 +30,15 @@ def search_flights(args):
 	search_params = {
 		'v': 3,
 		'flyFrom': args.from_location,
-		'passengers': args.passengers,
+		'passengers': 1,
 		'typeFlight': 'oneway',
 		'sort': 'price',
 		'limit': 1
 	}
+
+	# fill in number of passengers
+	if args.passengers:
+		search_params['passengers'] = args.passengers
 
 	# fill in location -- to
 	if args.to_location:
@@ -65,13 +69,13 @@ def search_flights(args):
 	if response.json().get('_results') == 0:
 		sys.exit('no flights found matching search criteria')
 
-	return response.json()
+	return response.json(), search_params.get('passengers')
 
 # get information about passengers
-def get_passenger_info(args):
+def get_passenger_info(args, num_passengers):
 	passengers = []
 
-	for i in range(args.passengers):
+	for i in range(num_passengers):
 		print('\nenter information about passenger', i + 1)
 		passenger = {}
 
@@ -113,7 +117,7 @@ def book_flight(args, response, passengers):
 	return response.json().get('pnr')
 
 args = parse_arguments()
-response = search_flights(args)
-passengers = get_passenger_info(args)
+response, num_passengers = search_flights(args)
+passengers = get_passenger_info(args, num_passengers)
 confirmation = book_flight(args, response, passengers)
 print('\nbooking confirmation: ' + confirmation)
