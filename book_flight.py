@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from datetime import datetime
 import argparse
 import json
 import requests
@@ -21,8 +22,6 @@ search_url = 'https://api.skypicker.com/flights'
 
 search_params = {
 	'v': 3,
-	'dateFrom': args.date,
-	'dateTo': args.date,
 	'flyFrom': '49.2-16.61-250km',
 	'to': 'dublin_ie',
 	'typeFlight': 'oneway',
@@ -30,6 +29,11 @@ search_params = {
 	'sort': 'price',
 	'limit': 1
 }
+
+# fill in departure date
+date = datetime.strptime(args.date, '%d-%m-%Y')
+search_params['dateFrom'] = date.strftime('%d/%m/%Y')
+search_params['dateTo'] = date.strftime('%d/%m/%Y')
 
 # modified slightly in order to be able to use argparse: 
 # having identifier called return results in syntax error
