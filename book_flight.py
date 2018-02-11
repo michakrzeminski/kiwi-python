@@ -14,6 +14,7 @@ def parse_arguments():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--date', help='departure date', required=True)
 	parser.add_argument('--from-location', help='from (airport code)', required=True)
+	parser.add_argument('--passengers', help='number of passengers', type=int, required=True)
 	parser.add_argument('--to-location', help='to (airport code), omit to see flights to anywhere', required=False)
 	parser.add_argument('--return-length', help='return flight, days in destination', type=int, required=False)
 	parser.add_argument('--one-way', help='one-way flight (default)', action='store_true', required=False)
@@ -28,14 +29,12 @@ def search_flights(args):
 	# initialize search parameters
 	search_params = {
 		'v': 3,
+		'flyFrom': args.from_location,
+		'passengers': args.passengers,
 		'typeFlight': 'oneway',
-		'adults': 1,
 		'sort': 'price',
 		'limit': 1
 	}
-
-	# fill in location -- from
-	search_params['flyFrom'] = args.from_location
 
 	# fill in location -- to
 	if args.to_location:
@@ -70,12 +69,10 @@ def search_flights(args):
 
 # get information about passengers
 def get_passenger_info(args):
-	num_passengers = 2
 	passengers = []
 
-	for i in range(num_passengers):
+	for i in range(args.passengers):
 		print('\nenter information about passenger', i + 1)
-
 		passenger = {}
 
 		passenger['firstName'] = input('first name: ')
@@ -96,11 +93,9 @@ def book_flight(args, response, passengers):
 	booking_body = {
 		'currency': 'USD',
 		'bags': 0,
-		'passengers': passengers
+		'passengers': passengers,
+		'booking_token': response.get('data')[0].get('booking_token')
 	}
-
-	# add booking token
-	booking_body['booking_token'] = response.get('data')[0].get('booking_token')
 
 	# add bags, if any
 	if args.bags:
@@ -115,11 +110,10 @@ def book_flight(args, response, passengers):
 	if response.json().get('pnr') == None:
 		sys.exit('failed to confirm reservation')
 
-	print(booking_body)
 	return response.json().get('pnr')
 
 args = parse_arguments()
 response = search_flights(args)
 passengers = get_passenger_info(args)
 confirmation = book_flight(args, response, passengers)
-print('confirmation: ' + confirmation)
+print('\nbooking confirmation: ' + confirmation)
