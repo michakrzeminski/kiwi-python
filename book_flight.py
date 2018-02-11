@@ -7,7 +7,7 @@ import argparse
 # get options from user
 parser = argparse.ArgumentParser()
 parser.add_argument('--date', help='departure date', required=True)
-parser.add_argument('--return-flight', help='return flight, days in destination', type=int, required=False)
+parser.add_argument('--return-length', help='return flight, days in destination', type=int, required=False)
 parser.add_argument('--one-way', help='one-way flight (default)', action='store_true', required=False)
 
 args = parser.parse_args()
@@ -30,10 +30,10 @@ search_params = {
 
 # modified slightly in order to be able to use argparse: 
 # having identifier called return results in syntax error
-if args.return_flight:
+if args.return_length:
 	search_params['typeFlight'] = 'return'
-	search_params['daysInDestinationFrom'] = args.return_flight
-	search_params['daysInDestinationTo'] = args.return_flight
+	search_params['daysInDestinationFrom'] = args.return_length
+	search_params['daysInDestinationTo'] = args.return_length
 
 print (search_params)
 response = requests.get(search_url, params=search_params)
