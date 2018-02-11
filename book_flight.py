@@ -9,6 +9,11 @@ import sys
 SEARCH_URL = 'https://api.skypicker.com/flights'
 BOOKING_URL = 'http://128.199.48.38:8080/booking'
 
+'''
+some argument names changed from assignment to avoid conflict with Python keywords, 
+but argparse will be able to match --return and --from, so these can be used
+'''
+
 # get options from command-line arguments
 def parse_arguments():
 	parser = argparse.ArgumentParser()
