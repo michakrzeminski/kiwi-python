@@ -9,6 +9,8 @@ import sys
 # get options from user
 parser = argparse.ArgumentParser()
 parser.add_argument('--date', help='departure date', required=True)
+parser.add_argument('--from-location', help='from (airport code)', required=True)
+parser.add_argument('--to-location', help='to (airport code), omit to see flights to anywhere', required=False)
 parser.add_argument('--return-length', help='return flight, days in destination', type=int, required=False)
 parser.add_argument('--one-way', help='one-way flight (default)', action='store_true', required=False)
 parser.add_argument('--cheapest', help='find cheapest flight (default)', action='store_true', required=False)
@@ -23,13 +25,18 @@ search_url = 'https://api.skypicker.com/flights'
 
 search_params = {
 	'v': 3,
-	'flyFrom': '49.2-16.61-250km',
-	'to': 'dublin_ie',
 	'typeFlight': 'oneway',
 	'adults': 1,
 	'sort': 'price',
 	'limit': 1
 }
+
+# fill in location -- from
+search_params['flyFrom'] = args.from_location
+
+# fill in location -- to
+if args.to_location:
+	search_params['to'] = args.to_location
 
 # fill in departure date
 date_in = datetime.strptime(args.date, '%d-%m-%Y')
@@ -37,16 +44,13 @@ date_out = date_in.strftime('%d/%m/%Y')
 search_params['dateFrom'] = date_out
 search_params['dateTo'] = date_out
 
-'''
-fill in return / length
-renamed to avoid having an identifier named 'return' (syntax error),
-but argument in the form --return is also recognized
-'''
+# fill in return / stay length
 if args.return_length:
 	search_params['typeFlight'] = 'return'
 	search_params['daysInDestinationFrom'] = args.return_length
 	search_params['daysInDestinationTo'] = args.return_length
 
+# find fastest instead of cheapest
 if args.fastest:
 	search_params['sort'] = 'duration'
 
