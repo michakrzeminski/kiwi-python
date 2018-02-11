@@ -31,9 +31,10 @@ search_params = {
 }
 
 # fill in departure date
-date = datetime.strptime(args.date, '%d-%m-%Y')
-search_params['dateFrom'] = date.strftime('%d/%m/%Y')
-search_params['dateTo'] = date.strftime('%d/%m/%Y')
+date_in = datetime.strptime(args.date, '%d-%m-%Y')
+date_out = date_in.strftime('%d/%m/%Y')
+search_params['dateFrom'] = date_out
+search_params['dateTo'] = date_out
 
 # modified slightly in order to be able to use argparse: 
 # having identifier called return results in syntax error
