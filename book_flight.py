@@ -113,4 +113,4 @@ def book_flight(args, response):
 args = parse_arguments()
 response = search_flights(args)
 confirmation = book_flight(args, response)
-print('booking confirmation: ' + confirmation)
+print(confirmation)
