@@ -70,11 +70,11 @@ def search_flights(args):
 
 # get information about passengers
 def get_passenger_info(args):
-	num_passengers = 1
+	num_passengers = 2
 	passengers = []
 
 	for i in range(num_passengers):
-		print('enter information about passenger', i + 1)
+		print('\nenter information about passenger', i + 1)
 
 		passenger = {}
 
