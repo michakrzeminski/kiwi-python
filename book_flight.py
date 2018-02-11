@@ -36,8 +36,11 @@ date_out = date_in.strftime('%d/%m/%Y')
 search_params['dateFrom'] = date_out
 search_params['dateTo'] = date_out
 
-# modified slightly in order to be able to use argparse: 
-# having identifier called return results in syntax error
+'''
+fill in return / length
+renamed to avoid having an identifier named 'return' (syntax error),
+but argument in the form --return is also recognized
+'''
 if args.return_length:
 	search_params['typeFlight'] = 'return'
 	search_params['daysInDestinationFrom'] = args.return_length
