@@ -68,23 +68,35 @@ def search_flights(args):
 
 	return response.json()
 
+# get information about passengers
+def get_passenger_info(args):
+	num_passengers = 1
+	passengers = []
+
+	for i in range(num_passengers):
+		print('get info about passenger', i + 1)
+
+		passenger = {
+			'firstName': 'Riva',
+			'lastName': 'Nathans',
+			'title': 'Mrs',
+			'email': 'rivanathans@gmail.com',
+			'documentID': 'id_string',
+			'birthday': '1988-07-12'
+		}
+
+		passengers.append(passenger)
+
+	return passengers
+
 # book flight
-def book_flight(args, response):
+def book_flight(args, response, passengers):
 
 	# initialize booking request
 	booking_body = {
 		'currency': 'USD',
 		'bags': 0,
-		'passengers': [
-			{
-				'firstName': 'Riva',
-				'lastName': 'Nathans',
-				'title': 'Mrs',
-				'email': 'rivanathans@gmail.com',
-				'documentID': 'id_string',
-				'birthday': '1988-07-12'
-			}
-		]
+		'passengers': passengers
 	}
 
 	# add booking token
@@ -104,13 +116,10 @@ def book_flight(args, response):
 		sys.exit('failed to confirm reservation')
 
 	print(booking_body)
-	print(response.status_code)
-	print(response.headers['content-type'])
-	print(response.json())
-
 	return response.json().get('pnr')
 
 args = parse_arguments()
 response = search_flights(args)
-confirmation = book_flight(args, response)
-print(confirmation)
+passengers = get_passenger_info(args)
+confirmation = book_flight(args, response, passengers)
+print('confirmation: ' + confirmation)
